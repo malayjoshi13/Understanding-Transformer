@@ -59,7 +59,7 @@ def get_ds(config):
     # First load dataset using HuggingFace's "load_dataset" fn.
     # https://huggingface.co/datasets/cfilt/iitb-english-hindi need this: ds_raw = load_dataset(f"{config['datasource']}", split='train').
     # https://huggingface.co/datasets/opus_books/viewer/en-it need this: ds_raw = load_dataset(f"{config['datasource']}", f"{config['lang_src']}-{config['lang_tgt']}", split='train').
-    split = "train[0:"+str(config['train_data_size'])+"]"
+    split = "train["+str(config['train_data_size_start'])+":"+str(config['train_data_size_end'])+"]"
     ds_raw = load_dataset(f"{config['datasource']}", split=split)
     print(len(ds_raw))
 
@@ -277,6 +277,8 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
     source_texts = []
     expected = []
     predicted = []
+    expected_for_bleu = []
+    final_expected_for_bleu = []
 
     loss_fn = nn.CrossEntropyLoss(ignore_index=tokenizer_src.token_to_id('[PAD]'), label_smoothing=0.1).to(device)
 
@@ -291,7 +293,6 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
         console_width = 80
 
     sum_val_loss = 0
-    sum_val_loss_list = []
     
     # Asking the model that don't calculate gradient now, we are now doing the validation.
     with torch.no_grad():
@@ -331,7 +332,6 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
 
             # Summing up all val losses per validation data point to later find the average val loss across all validation data points at a particular epoch.
             sum_val_loss += batch_val_loss.item()
-            sum_val_loss_list.append(batch_val_loss.item())
 
             # Log the batch val loss (i.e. loss of each batch within a particular epoch) in Tensorboard
             writer.add_scalar('val loss vs global iteration', batch_val_loss.item(), global_iterations)
@@ -352,6 +352,9 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
             #
             target_text = batch["tgt_text"][0]
             expected.append(target_text)
+            expected_for_bleu.append(target_text)
+            final_expected_for_bleu.append(expected_for_bleu)
+            expected_for_bleu = []
             #
             model_out_text = tokenizer_tgt.decode(model_out.detach().cpu().numpy())
             predicted.append(model_out_text)
@@ -366,7 +369,6 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
     
     # Once validation happen across all data validation points, then we do:
     #
-    print("val loss logged "+ str(sum_val_loss_list))
     # 1. Find and log the average val loss per epoch in Tensorboard
     epoch_val_loss = sum_val_loss / len(val_dataloader)
     print({"avg val loss after each epoch": f"{epoch_val_loss:6.3f}"})
@@ -380,13 +382,16 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
     writer.add_scalar('loss', epoch_train_loss, epoch)
     writer.flush()
     #
-    print("predicted during val")
-    print(predicted)
-    print("ground truth during val")
-    print(expected)
+    # print("predicted during val")
+    # print(predicted)
+    # print("ground truth during val")
+    # print(expected)
+    # print("ground truth during val for bleu")
+    # print(final_expected_for_bleu)
+    # #
     # 3. Compute the BLEU metric and log in Tensorboard
     metric = torchmetrics.text.BLEUScore()
-    bleu = metric(predicted, expected)
+    bleu = metric(predicted, final_expected_for_bleu)
     writer.add_scalar('validation BLEU vs global epoch', bleu, epoch)
     writer.flush()
     print("bleu "+str(bleu))
@@ -403,6 +408,7 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
     wer = metric(predicted, expected)
     writer.add_scalar('validation wer vs global epoch', wer, epoch) 
     writer.flush()
+    print("cer "+str(cer))
 
 ########################
 
