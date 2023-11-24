@@ -1,0 +1,9 @@
+torch
+torchtext
+datasets
+tokenizers
+torchmetrics
+tensorboard
+altair
+gdown
+py7zr
