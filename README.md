@@ -1,2 +1,138 @@
 # Understanding-Transformer
-Implementation of Vanilla Transformer from scratch and using it as a Machine Translator for understanding it's architecture, training pipeline and inference pipeline.
+
+This repository is a dedicated effort to facilitate a deep dive for me (and hopefully you) into the PyTorch implementation (right from scratch!!!) of the complete architecture, training pipeline and inference pipeline of the vanilla Transformer from [Attention Is All You Need](https://arxiv.org/abs/1706.03762) paper.
+
+This repo also facilitates understanding of the Transformer's practical use-case by letting the reader/user use it for the ***English to Hindi Language Translation*** task like below:<br>
+Input: `Ich bin ein guter Mensch, denke ich.` <br>
+Output of this repo's translator: `I think I'm a good person.` (which is actually pretty good!)<br>
+Actual translation: `I am a good person I think`.<br>
+ 
+<p align="center">
+  <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/53830da2-c2c0-4397-9f41-7304016b89ff" width="430" height="500">
+</p>
+
+Without any further delay let's deep dive into the code implementation of vanilla Transformer right from scratch!!
+    
+## Repository Structure (file names in order of their usage for building architecture from scratch, training and inference)
+- **config.py** --> file containing configurations like paths of folders and hyperparameters that need to be set (or use default ones) before training and inference
+
+- **model.py** --> file having architectural components of the transformer in form of separate classes, like Word Embedding layer, Positional Encoding layer, Layer Normalization layer, FeedForward layer, Residual Connection, Multi-head attention layer, Encoder layer, Decoder layer, Linear layer (or pre-softmax layer). Towards the end, this file has a function which combines all individual components to build and initialize a Transformer network.
+
+- **dataset_processor.py** --> file having components which pre-process the raw input data to make it usable for training and inference.
+
+- **training_pipeline.py** --> file having pipeline to get processed data from [dataset_processor.py]() file and then train and validate the transformer model on it.
+
+- **train_controller.ipynb** --> all-in-one file for training transformer (built from scratch!!) which clones this repository to get the required pipeline files for training, installs required packages and allows training (via [training_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_pipeline.py) file) using Colab's free computational resources. 
+
+- **inference_pipeline.py** --> file having pipeline to do inference using the weights of trained transformer.
+
+- **inference_controller.ipynb** --> all-in-one file for inferencing/transaltion using trained transformer via [inference_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/inference_pipeline.py) file.
+  
+- visualising_attention_plots.ipynb --> helps in visualising attention plots to understand all things it has learned during training
+
+## Configuration
+Before starting training and inference, configure (or keep by default configurations) the following parameters in ```config.py``` file:
+- batch_size,
+- num_epochs = number of epochs,
+- lr = learning rate,
+- seq_len = max allowed sequence length,
+- d_model = embedding size of model,
+- datasource = name of translation dataset from HuggingFace on which you want to train your transformer,
+- train_data_size = portion you want to choose out of the original dataset for training + validation,
+- lang_src = source language for translation,
+- lang_tgt = target language for translation,
+- model_folder = folder path where you want to save model's weight,
+- model_basename = name of model weight,
+- preload = set "latest" to resume training from latest epoch, set epoch like 01 to resume training from say 01th epoch, or set None to do training from scratch,
+- tokenizer_file = path of the folder where you want to save tokenizer,
+- experiment_name = path of the folder where you want to save loggings for tensorboard. You can plot these loggings to visualize training and validation plots.
+
+## Train
+**Recommend Way:** [training_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb)
+
+***Note:*** While going with this GColab-based training file, you can only set configurations using `config.py` file once you have cloned the GitHub repo within this GColab file's space.
+
+**Alternate Way:** 
+```
+!git clone https://github.com/malayjoshi13/Understanding-Transformer.git
+cd Understanding-Transformer
+conda create --name transformer
+conda activate transformer
+pip install -r requirements.txt
+!python training_pipeline.py
+```
+
+In both ways, in the end, you will get:
+- `output/vocab` folder having tokenization files for language pairs you train your model on (English and Hindi for this case).
+- `output/weights` folder having model training checkpoints.
+- `runs` folder having tensorboard logging files. You can plot these loggings to visualize training and validation plots.
+
+## Training Results
+
+Training results of Vanilla Transformer trained on the [WMT-14 dataset](https://torchtext.readthedocs.io/en/latest/datasets.html#wmt14) dataset from [Attention Is All You Need](https://arxiv.org/abs/1706.03762) paper:
+
+| Language-pair | BLEU score | Dataset |
+| --- | --- | --- |
+| English to German translation task | **28.4** | WMT-14 val |
+| English to French translation task | **41.8** | WMT-14 val |
+ 
+What I did (for now) is after coding architecture and training pipeline for vanilla Transformer, using [training_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_pipeline.py) file, I trained it on `90% of first 35K training data points` of the [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi) dataset having English-Hindi language pairs and validated on `rest 10% of first 35K training data points`. Why? As this dataset makes it easier to debug and play around (as I speak these languages). 
+
+This was the configuration I used during training and validation:
+batch_size: 32, <br>
+num_epochs: 100, <br>
+lr: 10**-4, <br>
+seq_len: 350, <br>
+d_model: 512, <br>
+data_size: 30000, <br>
+lang_src: "en", <br>
+lang_tgt: "hi" <br>
+
+Here are the training and validation results in my case:
+
+| Language-pair | BLEU score | CER | WER | Training loss | Validation loss | Dataset |
+| --- | --- | --- | --- | --- | --- | --- |
+| English to Hindi translation task | **28.4** | rvrej | jvnrj | sdas | sdsg | iitb-english-hindi val |
+
+; here BLEU score: <br>
+CER: defination, range, lower the better <br>
+WER:  <br>
+
+Training and Validation plots:
+
+Loss vs. Epochs:<br>
+Pros: Epoch-based plotting provides a higher-level overview of the training process. It's common to observe trends, patterns, or convergence over entire epochs.<br>
+Cons: If your dataset has varying batch sizes or if the training process involves dynamic changes (e.g., learning rate schedules), epoch-based plots might not capture these variations.
+
+Loss vs. Iterations (Batches):<br>
+Pros: Batch-based plotting provides a more granular view of the training process, capturing fluctuations and dynamics during individual batches.<br>
+Cons: It might be more challenging to interpret trends and convergence compared to epoch-based plots.<br>
+
+***Note:*** In this whole process, I didn't chase the training results shared in the [Attention Is All You Need](https://arxiv.org/abs/1706.03762) paper because the aim of this whole exploration is to better understand the main crux of architecture and the inner workings of vanilla Transformer (from a code implementation perspective). Soon, I'll also train it on WMT-14 and try to dive further into advanced training and scaling techniques. But till then I request not to compare my training results with original results.
+
+## Inference (Translating from English to Hindi languag)
+Use following notebook to translate: [inference_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/inference_controller.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/malayjoshi13/Understanding-Transformer/blob/main/inference_controller.ipynb)
+
+give user option to add their weight and vocab file's paths
+
+ye re attention plots
+
+## Acknowledgement
+This whole exploration and implementation is nspired by following codes and blogs:
+- [Attention Is All You Need paper](https://arxiv.org/abs/1706.03762)
+- [The Original Transformer (PyTorch) by Aleksa Gordic](https://github.com/gordicaleksa/pytorch-original-transformer)
+- [The Annotated Transformer by Harvard NLP](https://nlp.seas.harvard.edu/2018/04/03/attention.html)
+
+Also a big thanks to the maintainers of the [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi) dataset!!
+
+## End-note
+Thank you for patiently reading till here. I am pretty sure just like me, you would have also learnt something new about the Transformer's implementation. Using these learnt concepts I will push myself to solve failure cases similar to the one stated below and scale this repo further to other language pairs and NLP use cases. I encourage you also to do the same!!
+
+In practice, I would suggest using the official PyTorch implementation or HuggingFace's Transformer models which have many more tricks for better scaling. This repo is not the best option for a deploy-friendly use case as my goal was to understand better the theory about vanilla Attention by implementing the architecture described in the [Attention Is All You Need paper](https://arxiv.org/abs/1706.03762) from scratch by taking some reference of existing codes and blogs wherever needed. Therefore, I have kept my exploration and implementations till the model was trained correctly and produced correct translation results. I did not aim to reproduce the results from the paper, nor to implement all of the bells and whistles. 
+
+## Contributing
+You are welcome to contribute to the repository with your PRs. In case of query or feedback, please write to me at 13.malayjoshi@gmail.com or https://www.linkedin.com/in/malayjoshi13/.
+
+## Licence
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/LICENSE)
