@@ -8,7 +8,7 @@ Output of this repo's translator: `I think I'm a good person.` (which is actuall
 Actual translation: `I am a good person I think`.<br>
  
 <p align="center">
-  <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/53830da2-c2c0-4397-9f41-7304016b89ff" width="430" height="500">
+  <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/598b1991-c37f-4349-b85c-85fbf75d5f3d" width="430" height="500">
 </p>
 
 Without any further delay let's deep dive into the code implementation of vanilla Transformer right from scratch!!
