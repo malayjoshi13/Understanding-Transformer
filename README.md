@@ -3,10 +3,8 @@
 This repository is a dedicated effort to facilitate a deep dive for me (and hopefully you) into the PyTorch implementation (right from scratch!!!) of the complete architecture, training pipeline and inference pipeline of the vanilla Transformer from [Attention Is All You Need](https://arxiv.org/abs/1706.03762) paper.
 
 This repo also facilitates understanding of the Transformer's practical use-case by letting the reader/user use it for the ***English to Hindi Language Translation*** task like below:<br>
-Input: `Ich bin ein guter Mensch, denke ich.` <br>
-Output of this repo's translator: `I think I'm a good person.` (which is actually pretty good!)<br>
-Actual translation: `I am a good person I think`.<br>
- 
+Input: `Indian batting is at its peak now and even the bigger targets seem small to them.` <br>
+Output of this repo's translator: `भारतीय बल्लेबाजी इस समय चरम पर है और बड़े से बडा लक्ष्य भी उसके सामने बौना साबित हो रहा है।` 
 <p align="center">
   <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/598b1991-c37f-4349-b85c-85fbf75d5f3d" width="430" height="500">
 </p>
@@ -28,7 +26,7 @@ Without any further delay let's deep dive into the code implementation of vanill
 
 - **inference_controller.ipynb** --> all-in-one file for inferencing/transaltion using trained transformer via [inference_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/inference_pipeline.py) file.
   
-- visualising_attention_plots.ipynb --> helps in visualising attention plots to understand all things it has learned during training
+- **visualize_attention.py** --> helps in visualising attention plots to understand all things it has learned during training.
 
 ## Configuration
 Before starting training and inference, configure (or keep by default configurations) the following parameters in ```config.py``` file:
@@ -124,9 +122,11 @@ Training and Validation plots:
 ## Inference (Translating from English to Hindi languag)
 Use following notebook to translate: [inference_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/inference_controller.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/malayjoshi13/Understanding-Transformer/blob/main/inference_controller.ipynb)
 
-give user option to add their weight and vocab file's paths
+This script will automatically download the model's best weight (as of now it is weight at epoch 10) and tokenizers, will do translation on your given English input sentence and will allow you to visualize how each attention head learns like below:
 
-ye re attention plots
+<p align="center">
+  <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/a531f06f-2266-49cf-b057-687a09681b92" width="600" height="1000">
+</p>
 
 ## Acknowledgement
 This whole exploration and implementation is nspired by following codes and blogs:
