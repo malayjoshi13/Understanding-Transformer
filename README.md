@@ -3,8 +3,8 @@
 This repository is a dedicated effort to facilitate a deep dive for me (and hopefully you) into the PyTorch implementation (right from scratch!!!) of the complete architecture, training pipeline and inference pipeline of the vanilla Transformer from [Attention Is All You Need](https://arxiv.org/abs/1706.03762) paper.
 
 This repo also facilitates understanding of the Transformer's practical use-case by letting the reader/user use it for the ***English to Hindi Language Translation*** task like below:<br>
-Input: `Indian batting is at its peak now and even the bigger targets seem small to them.` <br>
-Output of this repo's translator: `भारतीय बल्लेबाजी इस समय चरम पर है और बड़े से बडा लक्ष्य भी उसके सामने बौना साबित हो रहा है।` 
+English input: `Indian batting is at its peak now and even the bigger targets seem small to them.` <br>
+Hindi translation: `भारतीय बल्लेबाजी इस समय चरम पर है और बड़े से बडा लक्ष्य भी उसके सामने बौना साबित हो रहा है।` (this output is not produced by model trained in this repo)
 <p align="center">
   <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/598b1991-c37f-4349-b85c-85fbf75d5f3d" width="430" height="500">
 </p>
