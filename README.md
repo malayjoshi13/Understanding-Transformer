@@ -66,7 +66,7 @@ In both ways, in the end, you will get:
 - `output/weights` folder having model training checkpoints.
 - `runs` folder having tensorboard logging files. You can plot these loggings to visualize training and validation plots.
 
-Dataset is prepared by taking data points from index 4000 to 3,4000 of [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi) dataset's train split. This dataset has English-Hindi language pairs. Training happens on `90%` of this dataset and validation on `rest 10%'. Why used this dataset? As this dataset makes it easier to debug and play around as I speak English and Hindi languages. 
+Dataset is prepared by taking data points from index 4000 to 3,4000 of [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi) dataset's train split. This dataset has English-Hindi language pairs. Training happens on `90%` of this dataset and validation on `rest 10%`. Why used this dataset? As this dataset makes it easier to debug and play around as I speak English and Hindi languages. 
 
 This was the configuration used during training and validation:
 batch_size: 24, <br>
@@ -88,7 +88,7 @@ Training results of Vanilla Transformer trained on the [WMT-14 dataset](https://
 | English to German translation task | **28.4** | WMT-14 val |
 | English to French translation task | **41.8** | WMT-14 val |
  
-What I did (for now) is after coding architecture and training pipeline for vanilla Transformer, I trained the model using [training_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb) file which at the back use [training_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_pipeline.py) file.
+What I did (for now) is after coding architecture and training pipeline for vanilla Transformer, I trained the model using [training_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb) file which at the back use [training_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_pipeline.py) file.
 
 Due to computation constraints (as using Colab's free-tier GPU) training happened in stages. In first phase, model trained till 8th epoch and 63% of 9th Epoch. In second phase model started re-training from 9th epoch.
 
