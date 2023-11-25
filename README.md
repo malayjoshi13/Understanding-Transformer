@@ -99,7 +99,7 @@ Here are the training and validation results in my case:
 
 | Language-pair | BLEU score | CER | WER | Training loss | Validation loss | Dataset |
 | --- | --- | --- | --- | --- | --- | --- |
-| English to Hindi translation task | **28.4** | rvrej | jvnrj | sdas | sdsg | iitb-english-hindi val |
+| English to Hindi translation task | **0.61** (Epoch 10), **0.59** (Epoch 11) | **0.16** (Epoch 10), **0.19** (Epoch 11) | **0.35** (Epoch 10), **0.37** (Epoch 11) | **1.507** (Epoch 10), **1.46** (Epoch 11) | **1.533** (Epoch 10), **1.51** (Epoch 11) | [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi)'s test split (from index 4000 to 3,4000) |
 
 ; here BLEU score: <br>
 CER: defination, range, lower the better <br>
