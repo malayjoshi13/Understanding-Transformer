@@ -379,7 +379,7 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
     # 2. Plot "val_loss/epoch" and "train_loss/epoch" on same graph for comparison and checking overfitting or underfitting 
     # writer.add_scalar('loss', epoch_val_loss, epoch, color='purple')
     # writer.add_scalar('loss', epoch_train_loss, epoch, color='green')
-    writer.add_scalars('loss', {'epoch_val_loss': epoch_val_loss, 'epoch_train_loss': epoch_train_loss}, epoch}
+    writer.add_scalars('loss', {'epoch_val_loss': epoch_val_loss, 'epoch_train_loss': epoch_train_loss}, epoch)
     writer.flush()
     #
     # print("predicted during val")
