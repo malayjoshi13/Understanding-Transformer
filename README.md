@@ -81,19 +81,19 @@ lang_tgt: "hi" <br>
 
 ## Training Results
 
-Training results of Vanilla Transformer trained on the [WMT-14 dataset](https://torchtext.readthedocs.io/en/latest/datasets.html#wmt14) dataset from [Attention Is All You Need](https://arxiv.org/abs/1706.03762) paper:
+Original results of Vanilla Transformer trained from the paper [Attention Is All You Need](https://arxiv.org/abs/1706.03762):
 
 | Language-pair | BLEU score | Dataset |
 | --- | --- | --- |
 | English to German translation task | **28.4** | WMT-14 val |
 | English to French translation task | **41.8** | WMT-14 val |
  
-What I did (for now) is after coding architecture and training pipeline for vanilla Transformer, I trained the model using [training_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb) file which at the back use [training_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_pipeline.py) file.
-
-Due to computation constraints (as using Colab's free-tier GPU) training happened in phases. In first phase, model trained till 8th epoch and 63% of 9th Epoch. In second phase model started re-training from 9th epoch.
+What I did (for now) is after coding architecture and training pipeline for vanilla Transformer, I trained the model using [training_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb) file which at the back use [training_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_pipeline.py) file. Due to computation constraints (as using Colab's free-tier GPU) training happened in phases. In first phase, model trained till 8th epoch and 63% of 9th Epoch. In second phase model started re-training from 9th epoch.
 
 How I did training in two phases?<br>
 I really don't advise this approach and would suggest going for the Colab Pro version if you can afford it. If you are just a student like me with limited financial resources, just follow this. So, after the first phase, when training stopped after the completion of the 8th Epoch, I switched to my other Google account, opened the training_controller.ipynb file there, and once GitHub was cloned in my GDrive, I moved the `output` and `tensorboard_logging` folders in the cloned repo at the switched GDrive.
+
+`To avoid overfitting training was stopped after 15th Epoch. Training weight at Epoch 10 is used for inference (will use it in next section).`<br>
 
 Here are the training and validation results in my case:
 
@@ -101,21 +101,23 @@ Here are the training and validation results in my case:
 | --- | --- | --- | --- | --- | --- | --- |
 | English to Hindi translation task | **0.61** (Epoch 10), **0.59** (Epoch 11) | **0.16** (Epoch 10), **0.19** (Epoch 11) | **0.35** (Epoch 10), **0.37** (Epoch 11) | **1.507** (Epoch 10), **1.46** (Epoch 11) | **1.533** (Epoch 10), **1.51** (Epoch 11) | [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi)'s test split (from index 4000 to 3,4000) |
 
-; here BLEU score: <br>
-CER: defination, range, lower the better <br>
-WER:  <br>
+; here BLEU score: Ranges between 0 and 1. The closer the value is to 1, the better the translation. <br>
+CER: Ranges between 0 and 1. The closer the value is to 0, the better the translation. <br>
+WER: Ranges between 0 and 1. The closer the value is to 0, the better the translation. <br>
 
 Training and Validation plots:
-- of first phase (0th to 8th epoch):
 
-Why did I choose two different plots of `Avg Batch Train Loss vs Epoch` and `Train Loss vs Iteration`?<br>
-`Avg Batch Train Loss vs. Epochs:<br>
-Pros: Epoch-based plotting provides a higher-level overview of the training process. It's common to observe trends, patterns, or convergence over entire epochs.<br>
-Cons: If your dataset has varying batch sizes or if the training process involves dynamic changes (e.g., learning rate schedules), epoch-based plots might not capture these variations.
-<br>
-Train Loss vs. Iterations (Batches):<br>
-Pros: Batch-based plotting provides a more granular view of the training process, capturing fluctuations and dynamics during individual batches.<br>
-Cons: It might be more challenging to interpret trends and convergence compared to epoch-based plots.<br>
+- Avg Batch Train Loss vs Epoch and Avg Batch Validation loss vs Epoch:<br>
+  ![TrainLoss_ValidationLoss_Epoch](https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/36a5fa4d-61ea-447a-8fd6-1810ce730522)<br>
+  
+- Validation BLEU score vs Epoch:<br>
+![valBLEU_epoch](https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/1f1f74ff-fa17-4ddd-8b2c-6966db0de56e)<br>
+
+- Validation CER vs Epoch:<br>
+![valCER_epoch](https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/8cad35b0-d2e7-40dc-bfe4-89081e3d5ffa)<br>
+
+- Validation WER vs Epoch:<br>
+![valWER_epoch](https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/f655f4cb-f8e6-4dd4-8924-3fc7b6435ba2)<br>
 
 ***Note:*** In this whole process, I didn't chase the training results shared in the [Attention Is All You Need](https://arxiv.org/abs/1706.03762) paper because the aim of this whole exploration is to better understand the main crux of architecture and the inner workings of vanilla Transformer (from a code implementation perspective). Soon, I'll also train it on WMT-14 and try to dive further into advanced training and scaling techniques. But till then I request not to compare my training results with original results.
 
