@@ -68,7 +68,7 @@ In both ways, in the end, you will get:
 
 Dataset is prepared by taking data points from index 4000 to 3,4000 of [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi) dataset's train split. This dataset has English-Hindi language pairs. Training happens on `90%` of this dataset and validation on `rest 10%`. Why used this dataset? As this dataset makes it easier to debug and play around as I speak English and Hindi languages. 
 
-This was the configuration used during training and validation:
+This was the configuration used during training and validation:<br>
 batch_size: 24, <br>
 num_epochs: 100, <br>
 lr: 10**-4, <br>
@@ -90,7 +90,10 @@ Training results of Vanilla Transformer trained on the [WMT-14 dataset](https://
  
 What I did (for now) is after coding architecture and training pipeline for vanilla Transformer, I trained the model using [training_controller.ipynb](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_controller.ipynb) file which at the back use [training_pipeline.py](https://github.com/malayjoshi13/Understanding-Transformer/blob/main/training_pipeline.py) file.
 
-Due to computation constraints (as using Colab's free-tier GPU) training happened in stages. In first phase, model trained till 8th epoch and 63% of 9th Epoch. In second phase model started re-training from 9th epoch.
+Due to computation constraints (as using Colab's free-tier GPU) training happened in phases. In first phase, model trained till 8th epoch and 63% of 9th Epoch. In second phase model started re-training from 9th epoch.
+
+How I did training in two phases?<br>
+I really don't advise this approach and would suggest going for the Colab Pro version if you can afford it. If you are just a student like me with limited financial resources, just follow this. So, after the first phase, when training stopped after the completion of the 8th Epoch, I switched to my other Google account, opened the training_controller.ipynb file there, and once GitHub was cloned in my GDrive, I moved the `output` and `tensorboard_logging` folders in the cloned repo at the switched GDrive.
 
 Here are the training and validation results in my case:
 
@@ -105,11 +108,12 @@ WER:  <br>
 Training and Validation plots:
 - of first phase (0th to 8th epoch):
 
-Loss vs. Epochs:<br>
+Why did I choose two different plots of `Avg Batch Train Loss vs Epoch` and `Train Loss vs Iteration`?<br>
+`Avg Batch Train Loss vs. Epochs:<br>
 Pros: Epoch-based plotting provides a higher-level overview of the training process. It's common to observe trends, patterns, or convergence over entire epochs.<br>
 Cons: If your dataset has varying batch sizes or if the training process involves dynamic changes (e.g., learning rate schedules), epoch-based plots might not capture these variations.
-
-Loss vs. Iterations (Batches):<br>
+<br>
+Train Loss vs. Iterations (Batches):<br>
 Pros: Batch-based plotting provides a more granular view of the training process, capturing fluctuations and dynamics during individual batches.<br>
 Cons: It might be more challenging to interpret trends and convergence compared to epoch-based plots.<br>
 
