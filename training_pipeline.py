@@ -408,7 +408,7 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
     wer = metric(predicted, expected)
     writer.add_scalar('validation wer vs global epoch', wer, epoch) 
     writer.flush()
-    print("cer "+str(wer))
+    print("wer "+str(wer))
 
 ########################
 
