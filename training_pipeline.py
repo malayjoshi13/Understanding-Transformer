@@ -333,9 +333,10 @@ def do_validation(model, epoch_train_loss, val_dataloader, tokenizer_src, tokeni
             # Summing up all val losses per validation data point to later find the average val loss across all validation data points at a particular epoch.
             sum_val_loss += batch_val_loss.item()
 
+            # Not logging as logging val loss for every iteration makes sooo many loggings on tensorboard that whole Colab will get slow
             # Log the batch val loss (i.e. loss of each batch within a particular epoch) in Tensorboard
-            writer.add_scalar('val loss vs global iteration', batch_val_loss.item(), global_iterations)
-            writer.flush()
+            # writer.add_scalar('val loss vs global iteration', batch_val_loss.item(), global_iterations)
+            # writer.flush()
 
             #....................................................................................................................
 
