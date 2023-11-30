@@ -6,7 +6,7 @@ This repo also facilitates understanding of the Transformer's practical use-case
 English input: `Indian batting is at its peak now and even the bigger targets seem small to them.` <br>
 Hindi translation: `भारतीय बल्लेबाजी इस समय चरम पर है और बड़े से बडा लक्ष्य भी उसके सामने बौना साबित हो रहा है।` (this output is not produced by model trained in this repo)
 <p align="center">
-  <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/b632b4ba-825b-4549-8b06-ac6e8b9f5497" width="600" height="690">
+  <img src="https://github.com/malayjoshi13/Understanding-Transformer/assets/71775151/b632b4ba-825b-4549-8b06-ac6e8b9f5497" width="630" height="690">
 </p>
 
 Without any further delay let's deep dive into the code implementation of vanilla Transformer right from scratch!!
