@@ -137,7 +137,7 @@ This whole exploration and implementation is nspired by following codes and blog
 Also a big thanks to the maintainers of the [iitb-english-hindi](https://huggingface.co/datasets/cfilt/iitb-english-hindi) dataset!!
 
 ## End-note
-Thank you for patiently reading till here. I am pretty sure just like me, you would have also learnt something new about the Transformer's implementation. Using these learnt concepts I will push myself to solve failure cases similar to the one stated below and scale this repo further to other language pairs and NLP use cases. I encourage you also to do the same!!
+Thank you for patiently reading till here. I am pretty sure just like me, you would have also learnt something new about the Transformer's implementation. Using these learnt concepts I will push myself to scale this repo further to other language pairs and NLP use cases. I encourage you also to do the same!!
 
 In practice, I would suggest using the official PyTorch implementation or HuggingFace's Transformer models which have many more tricks for better scaling. This repo is not the best option for a deploy-friendly use case as my goal was to understand better the theory about vanilla Attention by implementing the architecture described in the [Attention Is All You Need paper](https://arxiv.org/abs/1706.03762) from scratch by taking some reference of existing codes and blogs wherever needed. Therefore, I have kept my exploration and implementations till the model was trained correctly and produced correct translation results. I did not aim to reproduce the results from the paper, nor to implement all of the bells and whistles. 
 
